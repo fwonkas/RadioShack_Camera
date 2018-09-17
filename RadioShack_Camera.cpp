@@ -81,8 +81,6 @@ void RadioShack_Camera::capture_photo(String filename) {
     VC0706_frame_control(3);
     delay(10);
     Serial.end();			// clear all rx buffer
-    delay(5);
-    Serial.begin(115200);
     rx_ready = false;
 }
 
