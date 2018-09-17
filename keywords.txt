@@ -1,0 +1,2 @@
+RadioShack_Camera   KEYWORD1
+capture_photo       KEYWORD2
