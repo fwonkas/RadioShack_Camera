@@ -2,6 +2,7 @@
 #define RadioShack_Camera_h
 
 #include "Arduino.h"
+#include <SD.h>
 
 #define VC0706_PROTOCOL_SIGN 0x56
 #define VC0706_SERIAL_NUMBER 0x00
@@ -25,8 +26,8 @@
 #define READ_DATA_BLOCK_NO 56
 class RadioShack_Camera {
     public:
-        RadioShack_Camera(uint8_t pin);
-        void capture_photo(String filename);
+        RadioShack_Camera();
+        void capture_photo(File myFile);
     private:
         unsigned int sdSelect;
         unsigned char tx_counter;

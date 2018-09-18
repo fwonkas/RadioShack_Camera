@@ -1,11 +1,18 @@
 #include <RadioShack_Camera.h>
+#include <SD.h>
+
+File photoFile;
 
 #define SD_SELECT_PIN 10
 
-RadioShack_Camera camera(SD_SELECT_PIN);
+RadioShack_Camera camera;
 
 void setup() {
-  camera.capture_photo("photo.jpg");
+  SD.begin(SD_SELECT_PIN);
+  char filename[] = "photo.jpg";
+  if (SD.exists(filename)) SD.remove(filename);
+  photoFile = SD.open(filename, FILE_WRITE);
+  camera.capture_photo(photoFile);
 }
 
 void loop() {}

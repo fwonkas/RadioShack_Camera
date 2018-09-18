@@ -1,25 +1,13 @@
-#include <avr/pgmspace.h>
-#include "Arduino.h"
 #include "RadioShack_Camera.h"
-#include <SPI.h>
-#include <SD.h>
 
 uint32_t frame_length = 0;
 uint32_t vc_frame_address = 0;
 uint32_t last_data_length = 0;
 
-uint8_t SdChipSelect;
-Sd2Card card;
-File myFile;
+RadioShack_Camera::RadioShack_Camera() {}
 
-RadioShack_Camera::RadioShack_Camera(uint8_t sdPin) {
-    SdChipSelect = sdPin;
-    SD.begin(SdChipSelect);
-}
-
-void RadioShack_Camera::capture_photo(String filename) {
+void RadioShack_Camera::capture_photo(File image) {
     Serial.begin(115200);
-    if (SD.exists(filename)) SD.remove(filename);
     VC0706_compression_ratio(63);
     delay(100);
 
@@ -47,8 +35,6 @@ void RadioShack_Camera::capture_photo(String filename) {
 
     vc_frame_address = READ_DATA_BLOCK_NO;
 
-    myFile = SD.open(filename, FILE_WRITE);
-
     while (vc_frame_address < frame_length) {
          VC0706_read_frame_buffer(vc_frame_address - READ_DATA_BLOCK_NO, READ_DATA_BLOCK_NO);
          delay(9);
@@ -58,7 +44,7 @@ void RadioShack_Camera::capture_photo(String filename) {
         rx_counter = 0;
         buffer_read();
 
-        myFile.write(VC0706_rx_buffer + 5, READ_DATA_BLOCK_NO);
+        image.write(VC0706_rx_buffer + 5, READ_DATA_BLOCK_NO);
         vc_frame_address = vc_frame_address + READ_DATA_BLOCK_NO;
     }
 
@@ -74,9 +60,9 @@ void RadioShack_Camera::capture_photo(String filename) {
     rx_counter = 0;
     buffer_read();
 
-    myFile.write(VC0706_rx_buffer + 5, last_data_length);
+    image.write(VC0706_rx_buffer + 5, last_data_length);
 
-    myFile.close();
+    image.close();
     delay(100);
     VC0706_frame_control(3);
     delay(10);
