@@ -70,6 +70,19 @@ void RadioShack_Camera::capture_photo(File image) {
     rx_ready = false;
 }
 
+String RadioShack_Camera::get_version() {
+    Serial.begin(115200);
+    VC0706_get_version();
+    delay(10);
+    buffer_read();
+    String version;
+    for (unsigned char i = 5; i < rx_counter; i++) {
+        version = version + (char)VC0706_rx_buffer[i];
+    }
+    Serial.end();
+    return version;
+}
+
 void RadioShack_Camera::VC0706_reset() {
     tx_vcbuffer[0] = VC0706_PROTOCOL_SIGN;
     tx_vcbuffer[1] = VC0706_SERIAL_NUMBER;

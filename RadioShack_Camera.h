@@ -28,6 +28,7 @@ class RadioShack_Camera {
     public:
         RadioShack_Camera();
         void capture_photo(File myFile);
+        String get_version();
     private:
         unsigned int sdSelect;
         unsigned char tx_counter;
