@@ -4,8 +4,6 @@ This is an Arduino library for the RadioShack Camera Board model 2760248. It is 
 
 Connect 5v to 5v, Gnd to Gnd, RX to TX and TX to RX. Note that TX and RX will need to be disconnected when you're uploading a sketch to your Arduino.
 
-Currently this library only allows for one thing: capturing an image. Call capture_photo with the file.
-
 ```
 #include <RadioShack_Camera.h>
 #include <SD.h>
