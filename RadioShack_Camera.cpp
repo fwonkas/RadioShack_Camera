@@ -98,17 +98,17 @@ void RadioShack_Camera::resume() {
 }
 
 void RadioShack_Camera::turn_tv_out_off() {
-    cam.begin(115200);
+    Serial.begin(115200);
     VC0706_tv_out_control(0);
     delay(10);
-    cam.end();
+    Serial.end();
 }
 
 void RadioShack_Camera::turn_tv_out_on() {
-    cam.begin(115200);
+    Serial.begin(115200);
     VC0706_tv_out_control(1);
     delay(10);
-    cam.end();
+    Serial.end();
 }
 
 void RadioShack_Camera::VC0706_reset() {
