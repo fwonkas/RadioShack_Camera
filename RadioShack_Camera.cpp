@@ -83,6 +83,20 @@ String RadioShack_Camera::get_version() {
     return version;
 }
 
+void RadioShack_Camera::freeze() {
+    Serial.begin(115200);
+    VC0706_frame_control(0);
+    delay(10);
+    Serial.end();
+}
+
+void RadioShack_Camera::resume() {
+    Serial.begin(115200);
+    VC0706_frame_control(3);
+    delay(10);
+    Serial.end();
+}
+
 void RadioShack_Camera::VC0706_reset() {
     tx_vcbuffer[0] = VC0706_PROTOCOL_SIGN;
     tx_vcbuffer[1] = VC0706_SERIAL_NUMBER;
