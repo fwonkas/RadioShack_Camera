@@ -49,7 +49,6 @@ class RadioShack_Camera {
         void VC0706_reset();
         void VC0706_get_version();
         void VC0706_tv_out_control(int on);
-        void VC0706_osd_add_char(int col, int row, String osd_string);
         void VC0706_w_h_downsize(int scale_width, int scale_height);
         void VC0706_read_frame_buffer(unsigned long buffer_address, unsigned long buffer_length);
         void VC0706_frame_control(byte frame_control);

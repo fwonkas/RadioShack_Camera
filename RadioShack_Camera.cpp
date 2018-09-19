@@ -139,35 +139,6 @@ void RadioShack_Camera::VC0706_tv_out_control(int on) {
     buffer_send();
 }
 
-void RadioShack_Camera::VC0706_osd_add_char(int col, int row, String osd_string) {
-    unsigned char col_row;
-    int string_length;
-    int i;
-
-    col &= 0x0f;
-    row &= 0x0f;
-    col_row = (unsigned char)(col << 4 | row);
-
-    string_length = osd_string.length();
-    if (string_length > 14)
-        string_length = 14;		// max 14 osd characters
-
-    tx_vcbuffer[0] = VC0706_PROTOCOL_SIGN;
-    tx_vcbuffer[1] = VC0706_SERIAL_NUMBER;
-    tx_vcbuffer[2] = VC0706_COMMAND_OSD_ADD_CHAR;
-    tx_vcbuffer[3] = string_length + 2;
-    tx_vcbuffer[4] = string_length;		// character number
-    tx_vcbuffer[5] = col_row;
-
-    for (i = 0; i < string_length; i++) {
-        tx_vcbuffer[i + 6] = osd_string.charAt(i);
-    }
-
-    tx_counter = string_length + 6;
-
-    buffer_send();
-}
-
 void RadioShack_Camera::VC0706_w_h_downsize(int scale_width, int scale_height) {
     int scale;
 
