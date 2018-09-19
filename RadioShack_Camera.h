@@ -31,6 +31,8 @@ class RadioShack_Camera {
         String get_version();
         void freeze();
         void resume();
+        void turn_tv_out_off();
+        void turn_tv_out_on();
     private:
         unsigned int sdSelect;
         unsigned char tx_counter;
