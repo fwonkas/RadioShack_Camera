@@ -1,6 +1,6 @@
 # RadioShack_Camera
 
-This is an Arduino library for the RadioShack Camera Board model 2760248. It is based [code provided by RadioShack](https://github.com/RadioShackCorp/2760248-Camera-Board).
+This is an Arduino library for the RadioShack Camera Board model 2760248. It is based on [code provided by RadioShack](https://github.com/RadioShackCorp/2760248-Camera-Board).
 
 Connect 5v to 5v, Gnd to Gnd, RX to TX and TX to RX. Note that TX and RX will need to be disconnected when you're uploading a sketch to your Arduino.
 
