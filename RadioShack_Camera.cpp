@@ -111,6 +111,20 @@ void RadioShack_Camera::turn_tv_out_on() {
     Serial.end();
 }
 
+void RadioShack_Camera::power_save_on() {
+    Serial.begin(115200);
+    VC0706_uart_power_save(1);
+    delay(10);
+    Serial.end();
+}
+
+void RadioShack_Camera::power_save_off() {
+    Serial.begin(115200);
+    VC0706_uart_power_save(0);
+    delay(10);
+    Serial.end();
+}
+
 void RadioShack_Camera::VC0706_reset() {
     tx_vcbuffer[0] = VC0706_PROTOCOL_SIGN;
     tx_vcbuffer[1] = VC0706_SERIAL_NUMBER;

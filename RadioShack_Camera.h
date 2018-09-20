@@ -33,6 +33,8 @@ class RadioShack_Camera {
         void resume();
         void turn_tv_out_off();
         void turn_tv_out_on();
+        void power_save_on();
+        void power_save_off();
     private:
         unsigned int sdSelect;
         unsigned char tx_counter;
