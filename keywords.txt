@@ -1,2 +1,7 @@
 RadioShack_Camera   KEYWORD1
 capture_photo       KEYWORD2
+get_version         KEYWORD2
+freeze              KEYWORD2
+resume              KEYWORD2
+turn_tv_out_off     KEYWORD2
+turn_tv_out_on      KEYWORD2
