@@ -5,3 +5,5 @@ freeze              KEYWORD2
 resume              KEYWORD2
 turn_tv_out_off     KEYWORD2
 turn_tv_out_on      KEYWORD2
+power_save_on       KEYWORD2
+power_save_off      KEYWORD2
