@@ -12,7 +12,7 @@ File photoFile;
 
 #define SD_SELECT_PIN 10
 
-RadioShack_Camera camera;
+RadioShack_Camera camera(&Serial);
 
 void setup() {
   SD.begin(SD_SELECT_PIN);
