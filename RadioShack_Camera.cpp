@@ -4,10 +4,18 @@ uint32_t frame_length = 0;
 uint32_t vc_frame_address = 0;
 uint32_t last_data_length = 0;
 
-RadioShack_Camera::RadioShack_Camera() {}
+RadioShack_Camera::RadioShack_Camera(HardwareSerial *device) {
+    isHwSerial = true;
+    hwSerial = device;
+}
+
+RadioShack_Camera::RadioShack_Camera(SoftwareSerial *device) {
+    isHwSerial = false;
+    swSerial = device;
+}
 
 void RadioShack_Camera::capture_photo(File image) {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_compression_ratio(63);
     delay(100);
 
@@ -19,10 +27,10 @@ void RadioShack_Camera::capture_photo(File image) {
     rx_ready = false;
     rx_counter = 0;
 
-    Serial.end();			// clear all rx buffer
+    end();			// clear all rx buffer
     delay(5);
 
-    Serial.begin(115200);
+    begin(115200);
 
     VC0706_get_framebuffer_length(0);
     delay(10);
@@ -66,12 +74,12 @@ void RadioShack_Camera::capture_photo(File image) {
     delay(100);
     VC0706_frame_control(3);
     delay(10);
-    Serial.end();			// clear all rx buffer
+    end();			// clear all rx buffer
     rx_ready = false;
 }
 
 String RadioShack_Camera::get_version() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_get_version();
     delay(10);
     buffer_read();
@@ -79,50 +87,91 @@ String RadioShack_Camera::get_version() {
     for (unsigned char i = 5; i < rx_counter; i++) {
         version = version + (char)VC0706_rx_buffer[i];
     }
-    Serial.end();
+    end();
     return version;
 }
 
 void RadioShack_Camera::freeze() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_frame_control(0);
     delay(10);
-    Serial.end();
+    end();
 }
 
 void RadioShack_Camera::resume() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_frame_control(3);
     delay(10);
-    Serial.end();
+    end();
 }
 
 void RadioShack_Camera::turn_tv_out_off() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_tv_out_control(0);
     delay(10);
-    Serial.end();
+    end();
 }
 
 void RadioShack_Camera::turn_tv_out_on() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_tv_out_control(1);
     delay(10);
-    Serial.end();
+    end();
 }
 
 void RadioShack_Camera::power_save_on() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_uart_power_save(1);
     delay(10);
-    Serial.end();
+    end();
 }
 
 void RadioShack_Camera::power_save_off() {
-    Serial.begin(115200);
+    begin(115200);
     VC0706_uart_power_save(0);
     delay(10);
-    Serial.end();
+    end();
+}
+
+
+void RadioShack_Camera::begin(long speed) {
+    if (isHwSerial) {
+        hwSerial->begin(speed);
+    } else {
+        swSerial->begin(speed);
+    }
+}
+
+void RadioShack_Camera::end() {
+    if (isHwSerial) {
+        hwSerial->end();
+    } else {
+        swSerial->end();
+    }
+}
+
+int RadioShack_Camera::available() {
+    if (isHwSerial) {
+        return hwSerial->available();
+    } else {
+        return swSerial->available();
+    }
+}
+
+void RadioShack_Camera::write(unsigned char buffer) {
+    if (isHwSerial) {
+        hwSerial->write(buffer);
+    } else {
+        swSerial->write(buffer);
+    }
+}
+
+unsigned char RadioShack_Camera::read() {
+    if (isHwSerial) {
+        return hwSerial->read();
+    } else {
+        return swSerial->read();
+    }
 }
 
 void RadioShack_Camera::VC0706_reset() {
@@ -312,21 +361,21 @@ void RadioShack_Camera::VC0706_motion_windows_setting(unsigned int register_addr
     buffer_send();
 }
 
-void RadioShack_Camera::debug_send() {
-    int i = 0;
+// void RadioShack_Camera::debug_send() {
+//     int i = 0;
 
-    for (i = 0; i < tx_counter; i++) {
-        Serial.print(tx_vcbuffer[i], HEX);
-        Serial.print(", ");
-    }
+//     for (i = 0; i < tx_counter; i++) {
+//         Serial.print(tx_vcbuffer[i], HEX);
+//         Serial.print(", ");
+//     }
 
-    Serial.println("");
-}
+//     Serial.println("");
+// }
 
 void RadioShack_Camera::buffer_send() {
     int i = 0;
     for (i = 0; i < tx_counter; i++)
-        Serial.write(tx_vcbuffer[i]);
+        write(tx_vcbuffer[i]);
     tx_ready = true;
 }
 
@@ -338,8 +387,8 @@ void RadioShack_Camera::buffer_read() {
 
     rx_counter = 0;
     VC0706_rx_buffer[0] = 0;
-    while (Serial.available() > 0) {
-        VC0706_rx_buffer[rx_counter++] = Serial.read();
+    while (available() > 0) {
+        VC0706_rx_buffer[rx_counter++] = read();
     }
 
     if (VC0706_rx_buffer[0] != 0x76)

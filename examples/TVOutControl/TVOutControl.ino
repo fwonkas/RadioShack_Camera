@@ -1,6 +1,6 @@
 #include <RadioShack_Camera.h>
 
-RadioShack_Camera camera;
+RadioShack_Camera camera(&Serial);
 
 void setup() {}
 

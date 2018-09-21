@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include <SD.h>
+#include <SoftwareSerial.h>
 
 #define VC0706_PROTOCOL_SIGN 0x56
 #define VC0706_SERIAL_NUMBER 0x00
@@ -26,7 +27,8 @@
 #define READ_DATA_BLOCK_NO 56
 class RadioShack_Camera {
     public:
-        RadioShack_Camera();
+        RadioShack_Camera(HardwareSerial *device);
+        RadioShack_Camera(SoftwareSerial *device);
         void capture_photo(File myFile);
         String get_version();
         void freeze();
@@ -36,9 +38,12 @@ class RadioShack_Camera {
         void power_save_on();
         void power_save_off();
     private:
+        HardwareSerial *hwSerial;
+        SoftwareSerial *swSerial;
         unsigned int sdSelect;
         unsigned char tx_counter;
         unsigned char tx_vcbuffer[20];
+        bool isHwSerial;
         bool tx_ready;
         bool rx_ready;
         unsigned char rx_counter;
@@ -48,6 +53,11 @@ class RadioShack_Camera {
         uint32_t vc_frame_address;
         uint32_t last_data_length;
 
+        void begin(long speed);
+        void end();
+        int available();
+        void write(unsigned char);
+        unsigned char read();
         void VC0706_reset();
         void VC0706_get_version();
         void VC0706_tv_out_control(int on);
