@@ -6,8 +6,8 @@ void setup() {}
 
 void loop() {
   delay(3000);
-  camera.turn_tv_out_off();
+  camera.turnTvOutOff();
 
   delay(3000);
-  camera.turn_tv_out_on();
+  camera.turnTvOutOn();
 }

@@ -12,7 +12,7 @@ void setup() {
   char filename[] = "photo.jpg";
   if (SD.exists(filename)) SD.remove(filename);
   photoFile = SD.open(filename, FILE_WRITE);
-  camera.capture_photo(photoFile);
+  camera.capturePhoto(photoFile);
 }
 
 void loop() {}

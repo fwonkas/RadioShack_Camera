@@ -29,14 +29,14 @@ class RadioShack_Camera {
     public:
         RadioShack_Camera(HardwareSerial *device);
         RadioShack_Camera(SoftwareSerial *device);
-        void capture_photo(File myFile);
-        String get_version();
+        void capturePhoto(File myFile);
+        String getVersion();
         void freeze();
         void resume();
-        void turn_tv_out_off();
-        void turn_tv_out_on();
-        void power_save_on();
-        void power_save_off();
+        void turnTvOutOff();
+        void turnTvOutOn();
+        void powerSaveOn();
+        void powerSaveOff();
     private:
         HardwareSerial *hwSerial;
         SoftwareSerial *swSerial;
